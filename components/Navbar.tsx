@@ -8,22 +8,29 @@ export default function Navbar() {
   return (
     <header>
       {/* Logo / Login / Cart */}
-      <div className="flex justify-between bg-[#333333] py-8 px-4">
+      <div className="flex sm:flex-row flex-col justify-between bg-[#333333] sm:py-8 py-4 sm:px-4 px-2">
         <Link href="/" className="flex">
-          <Image src={cheese} width="50" height="50" alt="cheese" />
+          <Image
+            src={cheese}
+            width="50"
+            height="50"
+            alt="cheese"
+            // sizes="(max-width:768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
           <Image
             src={cheesepalace}
             className="ml-2"
             width="300"
             height="350"
             alt="cheese"
+            sizes="(max-width:768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </Link>
-        <div className="flex">
-          <button className="bg-[#fcb537] rounded-md px-8 py-2 text-white font-bold active:scale-90">
+        <div className="flex justify-center">
+          <button className="bg-[#fcb537] rounded-md sm:px-8 px-4 py-2 text-white font-bold active:scale-90">
             LOGIN
           </button>
-          <button className="bg-[#fcb537] text-white rounded-md px-4 py-2 ml-4 active:scale-90">
+          <button className="bg-[#fcb537] text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90">
             <span className="material-icons-outlined text-white align-middle">
               shopping_cart
             </span>
@@ -32,7 +39,7 @@ export default function Navbar() {
       </div>
 
       {/* Categories and Search */}
-      <div className="bg-[#eaeaea] flex justify-between px-4 py-4">
+      <div className="bg-[#eaeaea] sm:flex hidden sm:justify-between px-4 py-4">
         <ul className="flex self-center text-[#333333]">
           <Link href="/category/cow">
             <li>Cow</li>
