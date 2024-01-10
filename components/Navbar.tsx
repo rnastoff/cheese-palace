@@ -64,7 +64,11 @@ export default function Navbar() {
           </Link>
         </ul>
         <form className="flex self-center">
-          <input type="text" placeholder="Search" className="rounded-md p-2" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="rounded-md p-2 outline-none text-[#333333]"
+          />
           <button className="ml-4 bg-[#fcb537] rounded-md px-4 py-2 active:scale-90">
             <span className="material-icons align-middle text-white">
               search
