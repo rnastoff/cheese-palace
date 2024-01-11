@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ShoppingCart from "@/components/ShoppingCart";
+
+import cheeseBG from "@/images/bg-cheese-repeat.png";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +22,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center">
-          <div className="lg:max-w-7xl max-w-2xl w-full relative">
+      <body
+        className={`${inter.className} bg-repeat`}
+        style={{ backgroundImage: `url('/bg-cheese-repeat.png')` }}
+      >
+        {/* <ShoppingCart /> */}
+        <main className="flex min-h-screen flex-col items-center ">
+          <div className="lg:max-w-7xl max-w-2xl w-full relative bg-white">
             <Navbar />
             {children}
-            {/* <Footer /> */}
+            <Footer />
           </div>
         </main>
       </body>

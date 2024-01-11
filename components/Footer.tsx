@@ -1,8 +1,9 @@
 export default function Footer() {
   return (
-    <div className="flex justify-between bg-[#fcb537] w-full h-8">
-      <h1>Cheese Palace</h1>
-      <h1>2023</h1>
+    <div className=" bg-[#333333] w-full p-4 mt-24">
+      <h1 className="text-[#fcb537] text-lg font-bold self-center text-center">
+        Copyright 2023
+      </h1>
     </div>
   );
 }

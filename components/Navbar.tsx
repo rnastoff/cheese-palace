@@ -25,7 +25,6 @@ export default function Navbar() {
             width="300"
             height="350"
             alt="cheese"
-            layout="responsive"
             className="ml-2"
             // sizes="(max-width:768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />

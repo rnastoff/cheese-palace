@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-repeat {
+  background-image: url("/images/bg-cheese-repeat.png");
+  background-repeat: repeat;
+}

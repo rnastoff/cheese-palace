@@ -17,9 +17,9 @@ export default function Product() {
         {/* Product */}
         <div className="lg:w-7/12 w-full lg:px-4 px-0 lg:mt-0 mt-4">
           {/* Sale Tag */}
-          <div className="bg-[#F04F36] text-white text-center font-bold py-1 w-[70px]">
+          <p className="bg-[#F04F36] text-white text-center font-bold py-1 w-[70px]">
             SALE
-          </div>
+          </p>
           <h1 className="text-4xl font-bold">Coeur De Savoie Cheese</h1>
 
           {/* Price */}
@@ -29,16 +29,14 @@ export default function Product() {
 
             {/* Sale Price */}
             <div className="flex">
-              <div className="text-4xl text-[#F04F36] font-bold">$17.99</div>
-              <div className="text-lg line-through ml-4 text-[#333333]">
-                $21.99
-              </div>
+              <p className="text-4xl text-[#F04F36] font-bold">$17.99</p>
+              <p className="text-lg line-through ml-4 text-[#333333]">$21.99</p>
             </div>
           </div>
 
           {/* Description */}
           <div className="mt-4">
-            <div className="font-bold">Description:</div>
+            <h2 className="font-bold">Description:</h2>
             <p className="">
               Embark on a culinary journey to the picturesque Alps with our
               Coeur De Savoie Cheese. Named after the heart-shaped region it
@@ -68,7 +66,7 @@ export default function Product() {
 
           {/* Quantity and Add to Cart */}
           <form className="mt-8">
-            <div className="font-bold">Quantity:</div>
+            <h2 className="font-bold">Quantity:</h2>
             <div className="flex">
               {/* Increment/Decrement */}
               <div className="flex">
