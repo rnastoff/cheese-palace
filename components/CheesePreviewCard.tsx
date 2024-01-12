@@ -11,7 +11,7 @@ interface CheesePreviewProps {
   size: string;
   milkType: string;
   slug: string;
-  image?: any;
+  image: any;
 }
 
 export default function CheesePreviewCard({

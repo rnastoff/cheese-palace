@@ -23,12 +23,31 @@ async function getProduct(slug: string) {
   return product;
 }
 
+async function getRecommendations(milk: string, country: string) {
+  const query = `*[_type == 'cheese' && milk->name == "${milk}" || country->name == "${country}"][0...4]  {
+    _id, 
+    name, 
+    sale, 
+    price, 
+    sale_price, 
+    size, 
+    'milk_type': milk->name, 
+    'slug': slug.current, 
+    'image': image.asset->url,
+  }`;
+  const recs = await client.fetch(query);
+  return recs;
+}
+
 export default async function Product({
   params,
 }: {
   params: { slug: string };
 }) {
+  console.log("PARAMS:", params.slug);
   const product = await getProduct(params.slug);
+  const recs = await getRecommendations(product.milk_type, product.country);
+  console.log(recs);
 
   //recommendations -> pass slug/milk/country into this component from parent
 
@@ -106,10 +125,9 @@ export default async function Product({
           </div>
 
           {/* Quantity and Add to Cart */}
-          <form className="mt-8">
+          {/* <form className="mt-8">
             <h2 className="font-bold">Quantity:</h2>
             <div className="flex">
-              {/* Increment/Decrement */}
               <div className="flex">
                 <button className="h-[60px] w-[60px] border-l-[1px] border-t-[1px] border-b-[1px] rounded-l-md border-gray-200 text-[#333333] text-4xl">
                   <div className="active:scale-75">-</div>
@@ -125,16 +143,15 @@ export default async function Product({
                   <div className="active:scale-75">+</div>
                 </button>
               </div>
-              {/* Add to Cart */}
               <button className="bg-[#fcb537] text-white lg:text-xl text-lg font-bold rounded-md py-4 lg:px-16 px-4 ml-4 active:scale-90">
                 ADD TO CART
               </button>
             </div>
-          </form>
+          </form> */}
         </div>
       </div>
 
-      <Recommendations />
+      <Recommendations recs={recs} />
     </div>
   );
 }

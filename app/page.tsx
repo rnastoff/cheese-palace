@@ -3,7 +3,7 @@ import { client } from "./lib/sanity";
 import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
 
-async function getCheese() {
+async function getPreviewCheese() {
   const query = `*[_type == 'cheese'] { 
         _id, 
         name, 
@@ -27,7 +27,7 @@ async function getSlideshow() {
 
 export default async function Home() {
   //Can use GROQ slicing for pagination?
-  const cheese = await getCheese();
+  const cheese = await getPreviewCheese();
   const slides = await getSlideshow();
 
   const cheeseHtml = cheese.map((item: any) => (
