@@ -1,9 +1,35 @@
 import Image from "next/image";
-import cheese from "@/images/products/CoeurDeSavoie.webp";
 import Recommendations from "@/components/Recommendations";
 
-export default function Product() {
-  //product details -> cms -> request the specific cheese data using the slug
+import { formatPrice } from "@/utils/utils";
+import { client } from "@/app/lib/sanity";
+
+async function getProduct(slug: string) {
+  const query = `*[_type == 'cheese' && slug.current == "${slug}"][0]  {
+    _id,
+    name,
+    description,  
+    size,
+    age,  
+    price,
+    sale,
+    sale_price,
+    'country': country->name,
+    'milk_type': milk->name,
+    'slug': slug.current,
+    'image': image.asset->url
+  }`;
+  const product = await client.fetch(query);
+  return product;
+}
+
+export default async function Product({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const product = await getProduct(params.slug);
+
   //recommendations -> pass slug/milk/country into this component from parent
 
   return (
@@ -11,56 +37,71 @@ export default function Product() {
       <div className="flex lg:flex-row flex-col lg:mt-4 mt-0 lg:p-0 p-4">
         {/* Image */}
         <div className="lg:w-5/12 w-full">
-          <Image src={cheese} alt="cheese" className="" />
+          <Image
+            src={product.image}
+            alt={product.name}
+            className=""
+            width={600}
+            height={600}
+          />
         </div>
 
         {/* Product */}
         <div className="lg:w-7/12 w-full lg:px-4 px-0 lg:mt-0 mt-4">
           {/* Sale Tag */}
-          <p className="bg-[#F04F36] text-white text-center font-bold py-1 w-[70px]">
-            SALE
-          </p>
-          <h1 className="text-4xl font-bold">Coeur De Savoie Cheese</h1>
+          {product.sale && (
+            <p className="bg-[#F04F36] text-white text-center font-bold py-1 w-[70px]">
+              SALE
+            </p>
+          )}
+
+          <h1 className="text-4xl font-bold">{product.name}</h1>
 
           {/* Price */}
           <div className="mt-2">
             {/* Regular Price */}
-            {/* <div className="text-4xl font-bold">$21.99</div> */}
+            {!product.sale && (
+              <div className="text-4xl font-bold">
+                {formatPrice(product.price)}
+              </div>
+            )}
 
             {/* Sale Price */}
-            <div className="flex">
-              <p className="text-4xl text-[#F04F36] font-bold">$17.99</p>
-              <p className="text-lg line-through ml-4 text-[#333333]">$21.99</p>
-            </div>
+            {product.sale && (
+              <div className="flex">
+                <p className="text-4xl text-[#F04F36] font-bold">
+                  {formatPrice(product.sale_price)}
+                </p>
+                <p className="text-lg line-through ml-4 text-[#333333]">
+                  {formatPrice(product.price)}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Description */}
           <div className="mt-4">
             <h2 className="font-bold">Description:</h2>
-            <p className="">
-              Embark on a culinary journey to the picturesque Alps with our
-              Coeur De Savoie Cheese. Named after the heart-shaped region it
-              hails from, this exquisite cheese is a celebration of traditional
-              French craftsmanship. Immerse yourself in the delicate, nutty
-              flavors and silky-smooth texture that define this semi-soft
-              cheese, expertly aged for a taste that captures the essence of the
-              Savoie region.
-            </p>
+            <p className="">{product.description}</p>
           </div>
 
           {/* Details */}
           <div className="mt-6">
             <div className="">
-              <span className="font-bold">Size: </span>250g
+              <span className="font-bold">Size: </span>
+              {product.size}
             </div>
             <div className="">
-              <span className="font-bold">Milk: </span>Cow
+              <span className="font-bold">Milk: </span>
+              {product.milk_type}
             </div>
             <div className="">
-              <span className="font-bold">Age: </span>12 Years
+              <span className="font-bold">Age: </span>
+              {product.age}
             </div>
             <div className="">
-              <span className="font-bold">Country: </span>France
+              <span className="font-bold">Country: </span>
+              {product.country}
             </div>
           </div>
 

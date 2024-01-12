@@ -4,15 +4,23 @@ import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
 
 async function getCheese() {
-  const query =
-    "*[_type == 'cheese'] { _id, name, sale, price, sale_price, size, 'milk_type': milk->name, 'slug': slug.current, 'image': image.asset->url}";
+  const query = `*[_type == 'cheese'] { 
+        _id, 
+        name, 
+        sale, 
+        price, 
+        sale_price, 
+        size, 
+        'milk_type': milk->name, 
+        'slug': slug.current, 
+        'image': image.asset->url
+      }`;
   const cheese = await client.fetch(query);
   return cheese;
 }
 
 async function getSlideshow() {
-  const query =
-    "*[_type == 'slideshow'] { image_destination, image_alt, 'image': image.asset->url }";
+  const query = `*[_type == 'slideshow'] { image_destination, image_alt, 'image': image.asset->url }`;
   const slides = await client.fetch(query);
   return slides;
 }

@@ -1,7 +1,6 @@
 import Image from "next/image";
-import cheese from "@/images/products/CoeurDeSavoie.webp";
 import Link from "next/link";
-import { urlFor } from "@/app/lib/sanity";
+import { formatPrice } from "@/utils/utils";
 
 interface CheesePreviewProps {
   _id: string;
@@ -26,10 +25,6 @@ export default function CheesePreviewCard({
   slug,
   image,
 }: CheesePreviewProps) {
-  function formatPrice(price: number) {
-    return "$" + price / 100;
-  }
-
   return (
     <Link href={`/cheese/${slug}`} className="">
       <div className="sm:p-4 p-2 border border-gray-200 sm:w-60 w-44 sm:h-[420px] h-[350px] mb-8">
