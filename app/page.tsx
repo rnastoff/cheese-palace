@@ -1,6 +1,6 @@
-import { client, urlFor } from "./lib/sanity";
+import { client } from "./lib/sanity";
 
-import Carousel from "@/components/Carousel";
+import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
 
 async function getCheese() {
@@ -10,20 +10,17 @@ async function getCheese() {
   return cheese;
 }
 
+async function getSlideshow() {
+  const query =
+    "*[_type == 'slideshow'] { image_destination, image_alt, 'image': image.asset->url }";
+  const slides = await client.fetch(query);
+  return slides;
+}
+
 export default async function Home() {
-  //Fetch Slideshow
-  //Fetch Cheeses
   //Can use GROQ slicing for pagination?
-
   const cheese = await getCheese();
-  // console.log("cheese", cheese);
-  // console.log("cheeseImage:", urlFor(cheese[0].image).url());
-  console.log("LENGTH OF CHEESE", cheese.length);
-
-  for (let i = 0; i < cheese.length; i++) {
-    console.log("cheese name:", cheese[i].name);
-    console.log("cheese image", cheese[i].image);
-  }
+  const slides = await getSlideshow();
 
   const cheeseHtml = cheese.map((item: any) => (
     <CheesePreviewCard
@@ -42,7 +39,7 @@ export default async function Home() {
 
   return (
     <div>
-      <Carousel />
+      <Slideshow slides={slides} />
       <h1 className="text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
         Our Cheese
       </h1>

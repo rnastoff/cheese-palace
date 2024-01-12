@@ -1,6 +1,6 @@
 import cheese from './cheese';
 import milk from './milk';
 import country from './country';
-import carousel from './carousel';
+import slideshow from './slideshow';
 
-export const schemaTypes = [cheese, milk, country, carousel];
+export const schemaTypes = [cheese, milk, country, slideshow];

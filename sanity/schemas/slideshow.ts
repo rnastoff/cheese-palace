@@ -1,7 +1,7 @@
 export default {
-  name: 'carousel',
+  name: 'slideshow',
   type: 'document',
-  title: 'Front Page Carousel Slide Images',
+  title: 'Front Page Slideshow Images',
   fields: [
     {
       name: "image",
@@ -13,5 +13,10 @@ export default {
       type: 'url',
       title: 'Image Url'
     },
+    {
+      name: "image_alt",
+      type: "string",
+      title: "Image Alt"
+    }
   ]
 }
