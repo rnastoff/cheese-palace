@@ -1,4 +1,5 @@
 import { client } from "./lib/sanity";
+import { CheesePreview } from "@/types/types";
 
 import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
@@ -30,7 +31,7 @@ export default async function Home() {
   const cheese = await getPreviewCheese();
   const slides = await getSlideshow();
 
-  const cheeseHtml = cheese.map((item: any) => (
+  const cheeseHtml = cheese.map((item: CheesePreview) => (
     <CheesePreviewCard
       _id={item._id}
       key={item._id}
@@ -39,7 +40,7 @@ export default async function Home() {
       sale={item.sale}
       sale_price={item.sale_price}
       size={item.size}
-      milkType={item.milk_type}
+      milk_type={item.milk_type}
       slug={item.slug}
       image={item.image}
     />

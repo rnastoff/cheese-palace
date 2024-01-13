@@ -1,18 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
+
+import { CheesePreview } from "@/types/types";
 import { formatPrice } from "@/utils/utils";
 
-interface CheesePreviewProps {
-  _id: string;
-  name: string;
-  price: number;
-  sale: boolean | null;
-  sale_price: number;
-  size: string;
-  milkType: string;
-  slug: string;
-  image: any;
-}
+// interface CheesePreviewProps {
+//   _id: string;
+//   name: string;
+//   price: number;
+//   sale: boolean | null;
+//   sale_price: number;
+//   size: string;
+//   milkType: string;
+//   slug: string;
+//   image: any;
+// }
 
 export default function CheesePreviewCard({
   _id,
@@ -24,7 +26,7 @@ export default function CheesePreviewCard({
   milkType,
   slug,
   image,
-}: CheesePreviewProps) {
+}: CheesePreview) {
   return (
     <Link href={`/cheese/${slug}`} className="">
       <div className="sm:p-4 p-2 border border-gray-200 sm:w-60 w-44 sm:h-[420px] h-[350px] mb-8">

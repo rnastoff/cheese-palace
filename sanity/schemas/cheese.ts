@@ -61,7 +61,11 @@ export default {
     {
       name: 'sale',
       type: 'boolean',
-      title: 'Is this on sale?'
+      title: 'Is this on sale?',
+      initialValue: false,
+      options: {
+        layout: "checkbox"
+      }
     },
     {
       name: 'sale_price',
