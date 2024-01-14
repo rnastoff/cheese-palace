@@ -3,8 +3,8 @@ import CheesePreviewCard from "@/components/CheesePreviewCard";
 
 import { CheesePreview } from "@/types/types";
 
-async function getCountryCheese(country: string) {
-  const query = `*[_type == 'cheese' && country->name == "${country}"] {
+async function getMilkCheese(milk: string) {
+  const query = `*[_type == 'cheese' && milk->name == "${milk}"] {
     _id,
     name,
     sale,
@@ -15,20 +15,16 @@ async function getCountryCheese(country: string) {
     'slug': slug.current,
     'image': image.asset->url
   }`;
-  const countryCheese = await client.fetch(query);
-  return countryCheese;
+  const milkCheese = client.fetch(query);
+  return milkCheese;
 }
 
-export default async function Country({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  let country =
+export default async function Milk({ params }: { params: { slug: string } }) {
+  const milk =
     params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
-  const countryCheese = await getCountryCheese(country);
+  const milkCheese = await getMilkCheese(milk);
 
-  let countryCheeseHtml = countryCheese.map((item: CheesePreview) => (
+  const milkCheeseHtml = milkCheese.map((item: CheesePreview) => (
     <CheesePreviewCard
       _id={item._id}
       key={item._id}
@@ -46,10 +42,10 @@ export default async function Country({
   return (
     <div>
       <h1 className="text-[#333333] text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
-        {country} Cheeses
+        {milk} Milk Cheese
       </h1>
       <div className="mt-4 grid xl:grid-cols-5 lg:grid-cols-4 grid-cols-2 justify-items-center">
-        {countryCheeseHtml}
+        {milkCheeseHtml}
       </div>
     </div>
   );
