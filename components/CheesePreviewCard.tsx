@@ -4,18 +4,6 @@ import Link from "next/link";
 import { CheesePreview } from "@/types/types";
 import { formatPrice } from "@/utils/utils";
 
-// interface CheesePreviewProps {
-//   _id: string;
-//   name: string;
-//   price: number;
-//   sale: boolean | null;
-//   sale_price: number;
-//   size: string;
-//   milkType: string;
-//   slug: string;
-//   image: any;
-// }
-
 export default function CheesePreviewCard({
   _id,
   name,
@@ -23,7 +11,7 @@ export default function CheesePreviewCard({
   price,
   sale_price,
   size,
-  milkType,
+  milk_type,
   slug,
   image,
 }: CheesePreview) {
@@ -69,8 +57,14 @@ export default function CheesePreviewCard({
           <div className="text-xl leading-6 mt-2 text-[#333333] h-[80px]">
             {name}
           </div>
-          <div className="mt-2 text-gray-500">Size: {size}</div>
-          <div className="text-gray-500">Category: {milkType}</div>
+          <div className="mt-2 text-gray-500">
+            <span className="font-bold">Size: </span>
+            {size}
+          </div>
+          <div className="text-gray-500">
+            <span className="font-bold">Milk: </span>
+            {milk_type}
+          </div>
         </div>
       </div>
     </Link>

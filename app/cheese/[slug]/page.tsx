@@ -44,12 +44,8 @@ export default async function Product({
 }: {
   params: { slug: string };
 }) {
-  console.log("PARAMS:", params.slug);
   const product = await getProduct(params.slug);
   const recs = await getRecommendations(product.milk_type, product.country);
-  console.log(recs);
-
-  //recommendations -> pass slug/milk/country into this component from parent
 
   return (
     <div>

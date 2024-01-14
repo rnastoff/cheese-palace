@@ -17,7 +17,7 @@ interface SlideProps {
 export default function Slideshow({ slides }: { slides: SlideProps[] }) {
   let slideshowHtml = slides.map((slide) => (
     <SwiperSlide key={slide.image_alt}>
-      <Link href="/">
+      <Link href={`${slide.image_destination}`}>
         <Image
           src={slide.image}
           alt={slide.image_alt}

@@ -10,7 +10,7 @@ export default {
     },
     {
       name: "image_destination",
-      type: 'url',
+      type: 'string',
       title: 'Image Url'
     },
     {

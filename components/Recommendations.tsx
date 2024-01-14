@@ -27,7 +27,7 @@ export default function Recommendations({
       sale={cheese.sale}
       sale_price={cheese.sale_price}
       size={cheese.size}
-      milkType={cheese.milk_type}
+      milk_type={cheese.milk_type}
       slug={cheese.slug}
       image={cheese.image}
     />
