@@ -3,17 +3,20 @@ import { CheesePreview } from "@/types/types";
 
 import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
+import PaginationButtons from "@/components/PaginationButtons";
 
-async function getPreviewCheese(page?: string | string[] | undefined) {
+async function getTotalItems() {
+  const query = `count(*[_type == 'cheese'])`;
+  const totalItems = await client.fetch(query);
+  return totalItems;
+}
+
+async function getPreviewCheese(itemsPerPage: number, currentPage: number) {
   // We would pass this page number into a useHook
   // search params come in as strings
-  let itemsPerPage = 10;
-  const currentPage = typeof page === "string" ? Number(page) : 1;
+  // const currentPage = typeof page === "string" ? Number(page) : 1;
   const startIndex = currentPage * itemsPerPage - itemsPerPage;
   const endIndex = startIndex + (itemsPerPage - 1);
-  console.log("Current Page: ", currentPage);
-  console.log("Start Index: ", startIndex);
-  console.log("End Index: ", endIndex);
 
   const query = `*[_type == 'cheese'][${startIndex}..${endIndex}] { 
         _id, 
@@ -60,9 +63,14 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  console.log("params:", searchParams.page); //remember this comes in as a string
-  const cheese = await getPreviewCheese(searchParams.page);
   const slides = await getSlideshow();
+
+  const itemsPerPage = 10;
+  const currentPage =
+    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
+  const cheese = await getPreviewCheese(itemsPerPage, currentPage);
+  const totalItems = await getTotalItems();
+  console.log("Current Page:", currentPage);
 
   const cheeseHtml = cheese.map((item: CheesePreview) => (
     <CheesePreviewCard
@@ -79,8 +87,6 @@ export default async function Home({
     />
   ));
 
-  let currentPage = 1;
-
   return (
     <div>
       <Slideshow slides={slides} />
@@ -93,15 +99,11 @@ export default async function Home({
         {cheeseHtml}
       </div>
 
-      {/* Next / Prev */}
-      <div className="flex justify-center mt-6">
-        <button className="border bg-gray-50 border-gray-300 w-[50px] p-4 mr-2">
-          1
-        </button>
-        <button className="border bg-gray-50 border-gray-300 w-[50px] p-4 ml-2">
-          2
-        </button>
-      </div>
+      <PaginationButtons
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+        currentPage={searchParams.page}
+      />
     </div>
   );
 }
