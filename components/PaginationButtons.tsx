@@ -6,19 +6,21 @@ interface PaginationButtonsProps {
   itemsPerPage: number;
   totalItems: number;
   currentPage: string | string[] | undefined;
+  slug: string;
 }
 
 export default function PaginationButtons({
   itemsPerPage,
   totalItems,
   currentPage,
+  slug,
 }: PaginationButtonsProps) {
   const router = useRouter();
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   function buttonClick(page: number) {
     if (page < 1 || page > totalPages) return;
-    router.push(`/?page=${page}`);
+    router.push(`${slug}/?page=${page}`);
   }
 
   let buttonHtml = [...Array(totalPages)].map((e, i) => (

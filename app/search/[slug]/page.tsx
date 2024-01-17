@@ -1,8 +1,23 @@
 import { client } from "@/app/lib/sanity";
+import {
+  getPaginationIndexes,
+  formatCurrentPage,
+  itemsPerPage,
+} from "@/utils/utils";
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
+import PaginationButtons from "@/components/PaginationButtons";
 
-async function getSearchTermCheese(searchTerm: string) {
-  const query = `*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"]{ 
+async function getSearchTermData(
+  itemsPerPage: number,
+  currentPage: number,
+  searchTerm: string
+) {
+  const { startIndex, endIndex } = getPaginationIndexes(
+    itemsPerPage,
+    currentPage
+  );
+  const totalItemsQuery = `count(*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"])`;
+  const searchTermQuery = `*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"][${startIndex}..${endIndex}]{ 
     _id, 
     name, 
     sale, 
@@ -13,12 +28,25 @@ async function getSearchTermCheese(searchTerm: string) {
     'slug': slug.current, 
     'image': image.asset->url
   }`;
-  const searchTermCheese = await client.fetch(query);
-  return searchTermCheese;
+  const searchTermQueries = `{ "totalItems": ${totalItemsQuery} , "searchTermCheese": ${searchTermQuery} }`;
+
+  const searchTermData = await client.fetch(searchTermQueries);
+  return searchTermData;
 }
 
-export default async function Search({ params }: { params: { slug: string } }) {
-  const searchTermCheese = await getSearchTermCheese(params.slug);
+export default async function Search({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const currentPage = formatCurrentPage(searchParams.page);
+  const { totalItems, searchTermCheese } = await getSearchTermData(
+    itemsPerPage,
+    currentPage,
+    params.slug
+  );
 
   return (
     <div>
@@ -26,6 +54,12 @@ export default async function Search({ params }: { params: { slug: string } }) {
         Results for &quot;{params.slug}&quot;
       </h1>
       <CheesePreviewGrid cheese={searchTermCheese} />
+      <PaginationButtons
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+        currentPage={searchParams.page}
+        slug={`/sale`}
+      />
     </div>
   );
 }

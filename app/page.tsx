@@ -1,5 +1,9 @@
 import { client } from "./lib/sanity";
-import { CheesePreview } from "@/types/types";
+import {
+  getPaginationIndexes,
+  formatCurrentPage,
+  itemsPerPage,
+} from "@/utils/utils";
 
 import Slideshow from "@/components/Slideshow";
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
@@ -11,34 +15,28 @@ import PaginationButtons from "@/components/PaginationButtons";
   -getTotalItems is so we know how many pagination buttons to display
 */
 
-async function getTotalItems() {
-  const query = `count(*[_type == 'cheese'])`;
-  const totalItems = await client.fetch(query);
-  return totalItems;
-}
+async function getHomeData(itemsPerPage: number, currentPage: number) {
+  const { startIndex, endIndex } = getPaginationIndexes(
+    itemsPerPage,
+    currentPage
+  );
+  const totalItemsQuery = `count(*[_type == 'cheese'])`;
+  const homePreviewCheeseQuery = `*[_type == 'cheese'][${startIndex}..${endIndex}] { 
+    _id, 
+    name, 
+    sale, 
+    price, 
+    sale_price, 
+    size, 
+    'milk_type': milk->name, 
+    'slug': slug.current, 
+    'image': image.asset->url
+  }`;
+  const slideshowQuery = `*[_type == 'slideshow'] { image_destination, image_alt, 'image': image.asset->url }`;
+  const allQueries = `{ "totalItems": ${totalItemsQuery} , "homePreviewCheese": ${homePreviewCheeseQuery}, "slides": ${slideshowQuery} }`;
 
-async function getPreviewCheese(itemsPerPage: number, currentPage: number) {
-  const startIndex = currentPage * itemsPerPage - itemsPerPage;
-  const endIndex = startIndex + (itemsPerPage - 1);
-  const query = `*[_type == 'cheese'][${startIndex}..${endIndex}] { 
-        _id, 
-        name, 
-        sale, 
-        price, 
-        sale_price, 
-        size, 
-        'milk_type': milk->name, 
-        'slug': slug.current, 
-        'image': image.asset->url
-      }`;
-  const cheese = await client.fetch(query);
-  return cheese;
-}
-
-async function getSlideshow() {
-  const query = `*[_type == 'slideshow'] { image_destination, image_alt, 'image': image.asset->url }`;
-  const slides = await client.fetch(query);
-  return slides;
+  const allData = await client.fetch(allQueries);
+  return allData;
 }
 
 export default async function Home({
@@ -46,14 +44,8 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const slides = await getSlideshow();
-
-  const itemsPerPage = 10;
-  const currentPage =
-    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
-  const totalItems = await getTotalItems();
-
-  const cheese: CheesePreview[] = await getPreviewCheese(
+  const currentPage = formatCurrentPage(searchParams.page);
+  const { totalItems, homePreviewCheese, slides } = await getHomeData(
     itemsPerPage,
     currentPage
   );
@@ -65,11 +57,12 @@ export default async function Home({
         Our Cheese
       </h1>
 
-      <CheesePreviewGrid cheese={cheese} />
+      <CheesePreviewGrid cheese={homePreviewCheese} />
       <PaginationButtons
         itemsPerPage={itemsPerPage}
         totalItems={totalItems}
         currentPage={searchParams.page}
+        slug={""}
       />
     </div>
   );

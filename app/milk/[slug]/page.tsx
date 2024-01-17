@@ -1,8 +1,24 @@
 import { client } from "@/app/lib/sanity";
-import CheesePreviewGrid from "@/components/CheesePreviewGrid";
+import {
+  getPaginationIndexes,
+  formatCurrentPage,
+  itemsPerPage,
+} from "@/utils/utils";
 
-async function getMilkCheese(milk: string) {
-  const query = `*[_type == 'cheese' && milk->name == "${milk}"] {
+import CheesePreviewGrid from "@/components/CheesePreviewGrid";
+import PaginationButtons from "@/components/PaginationButtons";
+
+async function getMilkCheeseData(
+  itemsPerPage: number,
+  currentPage: number,
+  milk: string
+) {
+  const { startIndex, endIndex } = getPaginationIndexes(
+    itemsPerPage,
+    currentPage
+  );
+  const totalItemsQuery = `count(*[_type == 'cheese' && milk->name == "${milk}"])`;
+  const milkCheeseQuery = `*[_type == 'cheese' && milk->name == "${milk}"][${startIndex}..${endIndex}] {
     _id,
     name,
     sale,
@@ -13,14 +29,28 @@ async function getMilkCheese(milk: string) {
     'slug': slug.current,
     'image': image.asset->url
   }`;
-  const milkCheese = client.fetch(query);
-  return milkCheese;
+
+  const milkCheeseQueries = `{ "totalItems": ${totalItemsQuery} , "milkCheese": ${milkCheeseQuery} }`;
+
+  const milkCheeseData = await client.fetch(milkCheeseQueries);
+  return milkCheeseData;
 }
 
-export default async function Milk({ params }: { params: { slug: string } }) {
+export default async function Milk({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const currentPage = formatCurrentPage(searchParams.page);
   const milk =
     params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
-  const milkCheese = await getMilkCheese(milk);
+  const { totalItems, milkCheese } = await getMilkCheeseData(
+    itemsPerPage,
+    currentPage,
+    milk
+  );
 
   return (
     <div>
@@ -28,6 +58,12 @@ export default async function Milk({ params }: { params: { slug: string } }) {
         {milk} Milk Cheese
       </h1>
       <CheesePreviewGrid cheese={milkCheese} />
+      <PaginationButtons
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+        currentPage={searchParams.page}
+        slug={`/milk/${milk}`}
+      />
     </div>
   );
 }
