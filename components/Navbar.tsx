@@ -1,12 +1,23 @@
+"use client";
 import Link from "next/link";
 import cheese from "@/images/cheese.svg";
 import cheesepalace from "@/images/cheesepalace.svg";
 import Image from "next/image";
 import "material-icons/iconfont/material-icons.css";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // FOR MOBILE, USE AN ICON FOR LOGGING IN.
 
 export default function Navbar() {
+  const router = useRouter();
+  const [searchTerm, setSearch] = useState("");
+
+  function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    router.push(`/search/${searchTerm}`);
+  }
+
   return (
     <header>
       {/* Logo / Login / Cart */}
@@ -62,11 +73,15 @@ export default function Navbar() {
             <li>Buffalo</li>
           </Link>
         </ul>
-        <form className="flex self-center">
+
+        {/* Search */}
+        <form className="flex self-center" onSubmit={onSearchSubmit}>
           <input
             type="text"
             placeholder="Search"
             className="rounded-md p-2 outline-none text-[#333333]"
+            onChange={(e) => setSearch(e.target.value)}
+            value={searchTerm}
           />
           <button className="ml-4 bg-[#fcb537] rounded-md px-4 py-2 active:scale-90">
             <span className="material-icons align-middle text-white">

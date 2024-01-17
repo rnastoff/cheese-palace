@@ -5,6 +5,18 @@ import Slideshow from "@/components/Slideshow";
 import CheesePreviewCard from "@/components/CheesePreviewCard";
 import PaginationButtons from "@/components/PaginationButtons";
 
+//Don't need a hook
+//Move these functions to another file
+//fetch folder
+//getTotalItems(query)
+//getCheese file
+/*
+Parameters:
+query
+currentpage
+
+*/
+
 async function getTotalItems() {
   const query = `count(*[_type == 'cheese'])`;
   const totalItems = await client.fetch(query);
@@ -70,7 +82,7 @@ export default async function Home({
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const cheese = await getPreviewCheese(itemsPerPage, currentPage);
   const totalItems = await getTotalItems();
-  console.log("Current Page:", currentPage);
+  // console.log("search params:", searchParams);
 
   const cheeseHtml = cheese.map((item: CheesePreview) => (
     <CheesePreviewCard
@@ -89,7 +101,7 @@ export default async function Home({
 
   return (
     <div>
-      <Slideshow slides={slides} />
+      {currentPage === 1 && <Slideshow slides={slides} />}
       <h1 className="text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
         Our Cheese
       </h1>

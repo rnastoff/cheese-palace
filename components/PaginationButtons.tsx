@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import "material-icons/iconfont/material-icons.css";
 
 interface PaginationButtonsProps {
   itemsPerPage: number;
@@ -16,6 +17,7 @@ export default function PaginationButtons({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   function buttonClick(page: number) {
+    //Write code to prevent out of bounds (less than 1, more than totalPages)
     router.push(`/?page=${page}`);
   }
 
@@ -30,5 +32,22 @@ export default function PaginationButtons({
     </button>
   ));
 
-  return <div className="flex justify-center mt-6">{buttonHtml}</div>;
+  return (
+    <div className="mt-2">
+      <h1 className="text-center">Pages</h1>
+      <div className="flex justify-center mt-2">
+        <button onClick={() => buttonClick(Number(currentPage) - 1)}>
+          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle w-[50px] pt-4 pb-4">
+            keyboard_arrow_left
+          </span>
+        </button>
+        {buttonHtml}
+        <button>
+          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle w-[50px] pt-4 pb-4 ml-2">
+            keyboard_arrow_right
+          </span>
+        </button>
+      </div>
+    </div>
+  );
 }
