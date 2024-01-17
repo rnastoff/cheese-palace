@@ -17,14 +17,14 @@ export default function PaginationButtons({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   function buttonClick(page: number) {
-    //Write code to prevent out of bounds (less than 1, more than totalPages)
+    if (page < 1 || page > totalPages) return;
     router.push(`/?page=${page}`);
   }
 
   let buttonHtml = [...Array(totalPages)].map((e, i) => (
     <button
       key={i}
-      className="border bg-gray-50 border-gray-300 w-[50px] p-4 ml-2"
+      className="text-[#333333] border bg-gray-50 border-gray-300 sm:w-[50px] w-[40px] sm:p-4 p-2 ml-2 disabled:font-bold"
       disabled={i + 1 === Number(currentPage)}
       onClick={() => buttonClick(i + 1)}
     >
@@ -37,13 +37,13 @@ export default function PaginationButtons({
       <h1 className="text-center">Pages</h1>
       <div className="flex justify-center mt-2">
         <button onClick={() => buttonClick(Number(currentPage) - 1)}>
-          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle w-[50px] pt-4 pb-4">
+          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle sm:w-[50px] sm:pt-4 sm:pb-4 pt-2 pb-2">
             keyboard_arrow_left
           </span>
         </button>
         {buttonHtml}
-        <button>
-          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle w-[50px] pt-4 pb-4 ml-2">
+        <button onClick={() => buttonClick(Number(currentPage) + 1)}>
+          <span className="material-icons bg-gray-50 border border-gray-300 text-[#333333] text-center align-middle sm:w-[50px] sm:pt-4 sm:pb-4 ml-2 pt-2 pb-2">
             keyboard_arrow_right
           </span>
         </button>

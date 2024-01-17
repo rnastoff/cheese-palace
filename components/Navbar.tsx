@@ -29,7 +29,6 @@ export default function Navbar() {
             height="50"
             alt="cheese"
             className="sm:block hidden"
-            // sizes="(max-width:768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <Image
             src={cheesepalace}
@@ -37,7 +36,6 @@ export default function Navbar() {
             height="350"
             alt="cheese"
             className="ml-2"
-            // sizes="(max-width:768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </Link>
         <div className="flex justify-center ml-4">
@@ -60,16 +58,16 @@ export default function Navbar() {
       {/* Categories and Search */}
       <div className="bg-[#eaeaea] sm:flex hidden sm:justify-between px-4 py-4">
         <ul className="flex self-center text-[#333333]">
-          <Link href="/category/cow">
+          <Link href="/milk/cow">
             <li>Cow</li>
           </Link>
-          <Link href="/category/sheep" className="ml-8">
+          <Link href="/milk/sheep" className="ml-8">
             <li>Sheep</li>
           </Link>
-          <Link href="/category/goat" className="ml-8">
+          <Link href="/milk/goat" className="ml-8">
             <li>Goat</li>
           </Link>
-          <Link href="/category/buffalo" className="ml-8">
+          <Link href="/milk/buffalo" className="ml-8">
             <li>Buffalo</li>
           </Link>
         </ul>
