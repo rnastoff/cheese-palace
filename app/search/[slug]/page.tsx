@@ -1,21 +1,19 @@
 import { client } from "@/app/lib/sanity";
-import {
-  getPaginationIndexes,
-  formatCurrentPage,
-  itemsPerPage,
-} from "@/utils/utils";
+import { formatCurrentPage } from "@/utils/utils";
+import usePagination from "@/app/hooks/usePagination";
+
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
 async function getSearchTermData(
-  itemsPerPage: number,
-  currentPage: number,
-  searchTerm: string
+  searchTerm: string,
+  startIndex: number,
+  endIndex: number
 ) {
-  const { startIndex, endIndex } = getPaginationIndexes(
-    itemsPerPage,
-    currentPage
-  );
+  // const { startIndex, endIndex } = getPaginationIndexes(
+  //   itemsPerPage,
+  //   currentPage
+  // );
   const totalItemsQuery = `count(*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"])`;
   const searchTermQuery = `*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"][${startIndex}..${endIndex}]{ 
     _id, 
@@ -29,7 +27,6 @@ async function getSearchTermData(
     'image': image.asset->url
   }`;
   const searchTermQueries = `{ "totalItems": ${totalItemsQuery} , "searchTermCheese": ${searchTermQuery} }`;
-
   const searchTermData = await client.fetch(searchTermQueries);
   return searchTermData;
 }
@@ -42,10 +39,11 @@ export default async function Search({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
+  const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
   const { totalItems, searchTermCheese } = await getSearchTermData(
-    itemsPerPage,
-    currentPage,
-    params.slug
+    params.slug,
+    startIndex,
+    endIndex
   );
 
   return (

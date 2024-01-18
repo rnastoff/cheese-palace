@@ -1,9 +1,6 @@
 import { client } from "./lib/sanity";
-import {
-  getPaginationIndexes,
-  formatCurrentPage,
-  itemsPerPage,
-} from "@/utils/utils";
+import { formatCurrentPage } from "@/utils/utils";
+import usePagination from "./hooks/usePagination";
 
 import Slideshow from "@/components/Slideshow";
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
@@ -15,11 +12,7 @@ import PaginationButtons from "@/components/PaginationButtons";
   -getTotalItems is so we know how many pagination buttons to display
 */
 
-async function getHomeData(itemsPerPage: number, currentPage: number) {
-  const { startIndex, endIndex } = getPaginationIndexes(
-    itemsPerPage,
-    currentPage
-  );
+async function getHomeData(startIndex: number, endIndex: number) {
   const totalItemsQuery = `count(*[_type == 'cheese'])`;
   const homePreviewCheeseQuery = `*[_type == 'cheese'][${startIndex}..${endIndex}] { 
     _id, 
@@ -45,9 +38,11 @@ export default async function Home({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
+  const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
+
   const { totalItems, homePreviewCheese, slides } = await getHomeData(
-    itemsPerPage,
-    currentPage
+    startIndex,
+    endIndex
   );
 
   return (

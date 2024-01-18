@@ -1,6 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./slideshow.css";
@@ -30,7 +30,16 @@ export default function Slideshow({ slides }: { slides: SlideProps[] }) {
 
   return (
     <div>
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+      <Swiper
+        navigation={true}
+        modules={[Autoplay, Navigation]}
+        className="mySwiper"
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+      >
         {slideshowHtml}
       </Swiper>
     </div>

@@ -1,9 +1,7 @@
 import { client } from "../lib/sanity";
-import {
-  getPaginationIndexes,
-  formatCurrentPage,
-  itemsPerPage,
-} from "@/utils/utils";
+import { formatCurrentPage } from "@/utils/utils";
+import usePagination from "@/app/hooks/usePagination";
+
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
@@ -23,11 +21,7 @@ async function getSaleCheese() {
   return saleCheese;
 }
 
-async function getSaleCheeseData(itemsPerPage: number, currentPage: number) {
-  const { startIndex, endIndex } = getPaginationIndexes(
-    itemsPerPage,
-    currentPage
-  );
+async function getSaleCheeseData(startIndex: number, endIndex: number) {
   const totalItemsQuery = `count(*[_type == 'cheese' && sale == true])`;
   const saleCheeseQuery = `*[_type == 'cheese' && sale == true][${startIndex}..${endIndex}] {
     _id,
@@ -41,7 +35,6 @@ async function getSaleCheeseData(itemsPerPage: number, currentPage: number) {
     'image': image.asset->url
   }`;
   const saleCheeseQueries = `{ "totalItems": ${totalItemsQuery} , "saleCheese": ${saleCheeseQuery} }`;
-
   const saleCheeseData = await client.fetch(saleCheeseQueries);
   return saleCheeseData;
 }
@@ -52,9 +45,10 @@ export default async function Sale({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
+  const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
   const { totalItems, saleCheese } = await getSaleCheeseData(
-    itemsPerPage,
-    currentPage
+    startIndex,
+    endIndex
   );
 
   return (

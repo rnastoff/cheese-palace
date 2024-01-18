@@ -1,23 +1,15 @@
 import { client } from "@/app/lib/sanity";
-import {
-  getPaginationIndexes,
-  formatCurrentPage,
-  itemsPerPage,
-} from "@/utils/utils";
+import { formatCurrentPage } from "@/utils/utils";
+import usePagination from "@/app/hooks/usePagination";
 
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
 async function getCountryData(
-  itemsPerPage: number,
-  currentPage: number,
-  country: string
+  country: string,
+  startIndex: number,
+  endIndex: number
 ) {
-  const { startIndex, endIndex } = getPaginationIndexes(
-    itemsPerPage,
-    currentPage
-  );
-
   const totalItemsQuery = `count(*[_type == 'cheese' && country->name == "${country}"])`;
   const countryQuery = `*[_type == 'cheese' && country->name == "${country}"][${startIndex}..${endIndex}] {
     _id,
@@ -44,18 +36,19 @@ export default async function Country({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
+  const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
   const country =
     params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
   const { totalItems, countryCheese } = await getCountryData(
-    itemsPerPage,
-    currentPage,
-    country
+    country,
+    startIndex,
+    endIndex
   );
 
   return (
     <div>
       <h1 className="text-[#333333] text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
-        {/* Cheese from {country} */}
+        Cheese from {country}
       </h1>
       <CheesePreviewGrid cheese={countryCheese} />
       <PaginationButtons

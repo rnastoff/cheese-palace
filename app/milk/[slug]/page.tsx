@@ -1,22 +1,15 @@
 import { client } from "@/app/lib/sanity";
-import {
-  getPaginationIndexes,
-  formatCurrentPage,
-  itemsPerPage,
-} from "@/utils/utils";
+import { formatCurrentPage } from "@/utils/utils";
+import usePagination from "@/app/hooks/usePagination";
 
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
 async function getMilkCheeseData(
-  itemsPerPage: number,
-  currentPage: number,
-  milk: string
+  milk: string,
+  startIndex: number,
+  endIndex: number
 ) {
-  const { startIndex, endIndex } = getPaginationIndexes(
-    itemsPerPage,
-    currentPage
-  );
   const totalItemsQuery = `count(*[_type == 'cheese' && milk->name == "${milk}"])`;
   const milkCheeseQuery = `*[_type == 'cheese' && milk->name == "${milk}"][${startIndex}..${endIndex}] {
     _id,
@@ -31,7 +24,6 @@ async function getMilkCheeseData(
   }`;
 
   const milkCheeseQueries = `{ "totalItems": ${totalItemsQuery} , "milkCheese": ${milkCheeseQuery} }`;
-
   const milkCheeseData = await client.fetch(milkCheeseQueries);
   return milkCheeseData;
 }
@@ -44,12 +36,13 @@ export default async function Milk({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
+  const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
   const milk =
     params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
   const { totalItems, milkCheese } = await getMilkCheeseData(
-    itemsPerPage,
-    currentPage,
-    milk
+    milk,
+    startIndex,
+    endIndex
   );
 
   return (
