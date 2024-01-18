@@ -6,11 +6,13 @@ import Image from "next/image";
 import "material-icons/iconfont/material-icons.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useShoppingCart } from "use-shopping-cart";
 
 // FOR MOBILE, USE AN ICON FOR LOGGING IN.
 
 export default function Navbar() {
   const router = useRouter();
+  const { handleCartClick, cartCount } = useShoppingCart();
   const [searchTerm, setSearch] = useState("");
 
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -39,18 +41,28 @@ export default function Navbar() {
           />
         </Link>
         <div className="flex justify-center ml-4">
-          <button className="bg-[#fcb537] rounded-md sm:px-8 sm:block hidden px-4 py-2 text-white font-bold active:scale-90">
+          {/* LOGIN */}
+          {/* <button className="bg-[#fcb537] rounded-md sm:px-8 sm:block hidden px-4 py-2 text-white font-bold active:scale-90">
             LOGIN
           </button>
           <button className="bg-[#fcb537] sm:hidden block text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90">
             <span className="material-icons-outlined text-white align-middle">
               login
             </span>
-          </button>
-          <button className="bg-[#fcb537] text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90">
+          </button> */}
+          {/* SHOPPING CART BUTTON */}
+          <button
+            className="relative bg-[#fcb537] text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90"
+            onClick={handleCartClick}
+          >
             <span className="material-icons-outlined text-white align-middle">
               shopping_cart
             </span>
+            {(cartCount as number) > 0 && (
+              <p className="absolute top-0 right-1.5 text-lg text-[#333333] font-black">
+                {cartCount}
+              </p>
+            )}
           </button>
         </div>
       </div>

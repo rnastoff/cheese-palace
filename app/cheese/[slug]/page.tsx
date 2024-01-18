@@ -3,7 +3,7 @@ import Recommendations from "@/components/Recommendations";
 
 import { formatPrice } from "@/utils/utils";
 import { client } from "@/app/lib/sanity";
-import QuantityButtons from "@/components/QuantityButtons";
+import AddToCartButtons from "@/components/AddToCartButtons";
 
 async function getProduct(slug: string) {
   const query = `*[_type == 'cheese' && slug.current == "${slug}"][0]  {
@@ -15,6 +15,7 @@ async function getProduct(slug: string) {
     price,
     sale,
     sale_price,
+    price_id,
     'country': country->name,
     'milk_type': milk->name,
     'slug': slug.current,
@@ -77,19 +78,17 @@ export default async function Product({
           <div className="mt-2">
             {/* Regular Price */}
             {!product.sale && (
-              <div className="text-4xl font-bold">
-                {formatPrice(product.price)}
-              </div>
+              <div className="text-4xl font-bold">${product.price}</div>
             )}
 
             {/* Sale Price */}
             {product.sale && (
               <div className="flex">
                 <p className="text-4xl text-[#F04F36] font-bold">
-                  {formatPrice(product.sale_price)}
+                  ${product.sale_price}
                 </p>
                 <p className="text-lg line-through ml-4 text-[#333333]">
-                  {formatPrice(product.price)}
+                  ${product.price}
                 </p>
               </div>
             )}
@@ -121,8 +120,14 @@ export default async function Product({
             </div>
           </div>
 
-          {/* Quantity and Add to Cart */}
-          <QuantityButtons />
+          {/* Product being passed down to AddToCartButtons */}
+          <AddToCartButtons
+            name={product.name}
+            price={product.sale ? product.sale_price : product.price}
+            image={product.image}
+            currency="USD"
+            price_id={product.price_id}
+          />
         </div>
       </div>
 

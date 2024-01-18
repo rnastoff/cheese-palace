@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CheesePreview } from "@/types/types";
-import { formatPrice } from "@/utils/utils";
 
 export default function CheesePreviewCard({
   _id,
@@ -37,16 +36,14 @@ export default function CheesePreviewCard({
         {/* Price */}
         <div className="sm:mt-[220px] mt-[160px]">
           {/* Regular Price */}
-          {!sale && <div className="text-2xl mt-2">{formatPrice(price)}</div>}
+          {!sale && <div className="text-2xl mt-2">{price}</div>}
 
           {/* Sale Price */}
           {sale && (
             <div className="flex mt-2">
-              <div className="text-2xl text-[#F04F36] ">
-                {formatPrice(sale_price)}
-              </div>
+              <div className="text-2xl text-[#F04F36] ">{sale_price}</div>
               <div className="text-med line-through ml-2 text-[#333333]">
-                {formatPrice(price)}
+                {price}
               </div>
             </div>
           )}
