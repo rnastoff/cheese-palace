@@ -13,16 +13,17 @@ export default function ShoppingCart() {
     totalPrice,
     redirectToCheckout,
   } = useShoppingCart();
-  // const [checkoutError, setCheckoutError] = useState(false);
   const [status, setStatus] = useState("idle");
 
-  console.log("Cart Count:", cartCount);
-  console.log("CART DETAILS:", cartDetails);
+  // console.log("Cart Count:", cartCount);
+  // console.log("CART DETAILS:", cartDetails);
 
   let cartClass = shouldDisplayCart ? "block" : "hidden";
 
-  async function handleCheckoutClick(event: any) {
-    event.preventDefault();
+  async function handleCheckoutClick(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
 
     if ((cartCount as number) > 0) {
       setStatus("idle");
@@ -43,7 +44,7 @@ export default function ShoppingCart() {
 
   const redirectError = (
     <p className="text-center font-semibold text-[#F04F36] mb-4">
-      Unable to redirect to redirect to Stripe checkout page
+      Unable to redirect to Stripe checkout page
     </p>
   );
 
@@ -65,7 +66,7 @@ export default function ShoppingCart() {
           </h1>
         )}
 
-        {/* Item Start */}
+        {/* ITEMS IN CART */}
         {Object.values(cartDetails ?? {}).map((entry) => (
           <ShoppingCartItem
             key={entry.id}
@@ -77,16 +78,15 @@ export default function ShoppingCart() {
             currency={entry.currency}
           />
         ))}
-        {/* Item End */}
       </div>
 
-      {/* Buttom / Bottom Stuff */}
+      {/* SUBTOTAL AND PRICE */}
       <div className="border-t-2 border-t-gray-200 pt-2">
         {status === "redirect-error" && redirectError}
         <div className="flex justify-between ">
           {/* SUBTOTAL */}
           <p className="font-semibold">Subtotal: </p>
-          <p>${totalPrice}</p>
+          <p>${totalPrice?.toFixed(2)}</p>
         </div>
 
         <p>Shipping and taxes added at checkout</p>
@@ -98,8 +98,10 @@ export default function ShoppingCart() {
         >
           Checkout
         </button>
+
+        {/* CONTINUE SHOPPING BUTTON */}
         <div className="text-center mt-4">
-          <button className="text-[#333333]" onClick={handleCartClick}>
+          <button className="text-[#333333]" onClick={(e) => {}}>
             Continue Shopping
           </button>
         </div>

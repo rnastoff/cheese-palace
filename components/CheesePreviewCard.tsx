@@ -36,14 +36,14 @@ export default function CheesePreviewCard({
         {/* Price */}
         <div className="sm:mt-[220px] mt-[160px]">
           {/* Regular Price */}
-          {!sale && <div className="text-2xl mt-2">{price}</div>}
+          {!sale && <div className="text-2xl mt-2">${price}</div>}
 
           {/* Sale Price */}
           {sale && (
             <div className="flex mt-2">
-              <div className="text-2xl text-[#F04F36] ">{sale_price}</div>
+              <div className="text-2xl text-[#F04F36] ">${sale_price}</div>
               <div className="text-med line-through ml-2 text-[#333333]">
-                {price}
+                ${price}
               </div>
             </div>
           )}
