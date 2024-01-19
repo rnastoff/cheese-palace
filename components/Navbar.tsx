@@ -50,6 +50,7 @@ export default function Navbar() {
               login
             </span>
           </button> */}
+
           {/* SHOPPING CART BUTTON */}
           <button
             className="relative bg-[#fcb537] text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90"

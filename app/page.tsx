@@ -9,7 +9,7 @@ import PaginationButtons from "@/components/PaginationButtons";
 /*
   -Pagination done on CMS with array slicing
   -StartIndex and endIndex are for the array slice based on current Page
-  -getTotalItems is so we know how many pagination buttons to display
+  -getTotalItems is for how many buttons to display
 */
 
 async function getHomeData(startIndex: number, endIndex: number) {

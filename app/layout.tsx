@@ -27,9 +27,9 @@ export default function RootLayout({
       >
         {/* <ShoppingCart /> */}
         <CartProvider>
+          <ShoppingCart />
           <main className="flex min-h-screen flex-col items-center ">
             <div className="lg:max-w-7xl max-w-2xl w-full relative bg-white">
-              <ShoppingCart />
               <Navbar />
               {children}
               <Footer />
