@@ -17,7 +17,9 @@ export default function Navbar() {
 
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    router.push(`/search/${searchTerm}`);
+    if (searchTerm) {
+      router.push(`/search/${searchTerm}`);
+    }
   }
 
   return (
@@ -25,20 +27,8 @@ export default function Navbar() {
       {/* Logo / Login / Cart */}
       <div className="flex justify-between bg-[#333333] sm:py-8 py-4 sm:px-4 px-2">
         <Link href="/" className="flex">
-          <Image
-            src={cheese}
-            width="50"
-            height="50"
-            alt="cheese"
-            className="sm:block hidden"
-          />
-          <Image
-            src={cheesepalace}
-            width="300"
-            height="350"
-            alt="cheese"
-            className="ml-2"
-          />
+          <Image src={cheese} width="50" height="50" alt="cheese" className="sm:block hidden" />
+          <Image src={cheesepalace} width="300" height="350" alt="cheese" className="ml-2" />
         </Link>
         <div className="flex justify-center ml-4">
           {/* LOGIN */}
@@ -56,13 +46,9 @@ export default function Navbar() {
             className="relative bg-[#fcb537] text-white rounded-md px-4 py-2 sm:ml-4 ml-2 active:scale-90"
             onClick={handleCartClick}
           >
-            <span className="material-icons-outlined text-white align-middle">
-              shopping_cart
-            </span>
+            <span className="material-icons-outlined text-white align-middle">shopping_cart</span>
             {(cartCount as number) > 0 && (
-              <p className="absolute top-0 right-1.5 text-lg text-[#333333] font-black">
-                {cartCount}
-              </p>
+              <p className="absolute top-0 right-1.5 text-lg text-[#333333] font-black">{cartCount}</p>
             )}
           </button>
         </div>
@@ -95,9 +81,7 @@ export default function Navbar() {
             value={searchTerm}
           />
           <button className="ml-4 bg-[#fcb537] rounded-md px-4 py-2 active:scale-90">
-            <span className="material-icons align-middle text-white">
-              search
-            </span>
+            <span className="material-icons align-middle text-white">search</span>
           </button>
         </form>
       </div>

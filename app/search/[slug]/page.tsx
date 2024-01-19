@@ -5,17 +5,10 @@ import usePagination from "@/app/hooks/usePagination";
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
-async function getSearchTermData(
-  searchTerm: string,
-  startIndex: number,
-  endIndex: number
-) {
-  // const { startIndex, endIndex } = getPaginationIndexes(
-  //   itemsPerPage,
-  //   currentPage
-  // );
-  const totalItemsQuery = `count(*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"])`;
-  const searchTermQuery = `*[_type == 'cheese' && name match "${searchTerm}" || description match "${searchTerm}" || milk->name match "${searchTerm}" || country->name match "${searchTerm}"][${startIndex}..${endIndex}]{ 
+async function getSearchTermData(searchTerm: string, startIndex: number, endIndex: number) {
+  const searchTermStringArray = JSON.stringify(searchTerm.split("%20"));
+  const totalItemsQuery = `count(*[_type == 'cheese' && [name, description, milk->name, country->name] match ${searchTermStringArray}])`;
+  const searchTermQuery = `*[_type == 'cheese' && [name, description, milk->name, country->name] match ${searchTermStringArray}][${startIndex}..${endIndex}]{ 
     _id, 
     name, 
     sale, 
@@ -40,16 +33,14 @@ export default async function Search({
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
   const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
-  const { totalItems, searchTermCheese } = await getSearchTermData(
-    params.slug,
-    startIndex,
-    endIndex
-  );
+  const searchTermForDisplay = params.slug.split("%20").join(", ");
+
+  const { totalItems, searchTermCheese } = await getSearchTermData(params.slug, startIndex, endIndex);
 
   return (
     <div>
       <h1 className="text-[#333333] text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
-        Results for &quot;{params.slug}&quot;
+        Results for &quot;{searchTermForDisplay}&quot;
       </h1>
       <CheesePreviewGrid cheese={searchTermCheese} />
       <PaginationButtons
