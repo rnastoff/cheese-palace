@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import "./slideshow.css";
+import "../app/css/slideshow.css";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,12 +18,7 @@ export default function Slideshow({ slides }: { slides: SlideProps[] }) {
   let slideshowHtml = slides.map((slide) => (
     <SwiperSlide key={slide.image_alt}>
       <Link href={`${slide.image_destination}`}>
-        <Image
-          src={slide.image}
-          alt={slide.image_alt}
-          width="1280"
-          height="500"
-        />
+        <Image src={slide.image} alt={slide.image_alt} width="1280" height="500" priority={true} />
       </Link>
     </SwiperSlide>
   ));
