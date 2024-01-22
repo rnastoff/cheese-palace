@@ -5,24 +5,13 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import { useState } from "react";
 
 export default function ShoppingCart() {
-  const {
-    cartCount,
-    shouldDisplayCart,
-    handleCartClick,
-    cartDetails,
-    totalPrice,
-    redirectToCheckout,
-  } = useShoppingCart();
+  const { cartCount, shouldDisplayCart, handleCartClick, cartDetails, totalPrice, redirectToCheckout } =
+    useShoppingCart();
   const [status, setStatus] = useState("idle");
-
-  // console.log("Cart Count:", cartCount);
-  // console.log("CART DETAILS:", cartDetails);
 
   let cartClass = shouldDisplayCart ? "block" : "hidden";
 
-  async function handleCheckoutClick(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  async function handleCheckoutClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
 
     if ((cartCount as number) > 0) {
@@ -43,17 +32,13 @@ export default function ShoppingCart() {
   }
 
   const redirectError = (
-    <p className="text-center font-semibold text-[#F04F36] mb-4">
-      Unable to redirect to Stripe checkout page
-    </p>
+    <p className="text-center font-semibold text-[#F04F36] mb-4">Unable to redirect to Stripe checkout page</p>
   );
 
   return (
     <div className="w-screen">
       {/* OVERLAY */}
-      <div
-        className={`${cartClass} text-7xl w-full h-screen mx-auto absolute z-20 bg-[#fcb537]/90`}
-      ></div>
+      <div className={`${cartClass} text-7xl w-full h-screen mx-auto absolute z-20 bg-[#fcb537]/90`}></div>
 
       {/* SHOPPING CART */}
       <div
@@ -68,9 +53,7 @@ export default function ShoppingCart() {
           </div>
 
           {cartCount === 0 && (
-            <h1 className="text-xl py-12 pb-6 text-center">
-              You don&apos;t have any items in your cart.
-            </h1>
+            <h1 className="text-xl py-12 pb-6 text-center">You don&apos;t have any items in your cart.</h1>
           )}
 
           {/* ITEMS IN CART */}
