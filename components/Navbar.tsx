@@ -8,8 +8,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useShoppingCart } from "use-shopping-cart";
 
-// FOR MOBILE, USE AN ICON FOR LOGGING IN.
-
 export default function Navbar() {
   const router = useRouter();
   const { handleCartClick, cartCount } = useShoppingCart();
@@ -56,7 +54,7 @@ export default function Navbar() {
 
       {/* Categories and Search */}
       <div className="bg-[#eaeaea] sm:flex hidden sm:justify-between px-4 py-4">
-        <ul className="flex self-center text-[#333333]">
+        <ul className="flex self-center text-[#333333] font-semibold">
           <Link href="/milk/cow">
             <li>Cow</li>
           </Link>

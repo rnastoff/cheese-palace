@@ -40,17 +40,14 @@ export default async function Home({
   const currentPage = formatCurrentPage(searchParams.page);
   const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
 
-  const { totalItems, homePreviewCheese, slides } = await getHomeData(
-    startIndex,
-    endIndex
-  );
+  const { totalItems, homePreviewCheese, slides } = await getHomeData(startIndex, endIndex);
+
+  console.log("Total Items:", totalItems);
 
   return (
     <div>
       {currentPage === 1 && <Slideshow slides={slides} />}
-      <h1 className="text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
-        Our Cheese
-      </h1>
+      <h1 className="text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">Our Cheese</h1>
 
       <CheesePreviewGrid cheese={homePreviewCheese} />
       <PaginationButtons
