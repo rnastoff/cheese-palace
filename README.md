@@ -1,4 +1,4 @@
-# CHEESE PALACE E-COMMERCE
+# CHEESE PALACE - E-COMMERCE
 
 - React, NextJS
 - Typescript
