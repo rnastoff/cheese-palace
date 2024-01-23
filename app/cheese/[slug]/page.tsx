@@ -10,7 +10,7 @@ interface Params {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export function getQuery(slug: string) {
+function getQuery(slug: string) {
   const query = `*[_type == 'cheese' && slug.current == "${slug}"][0]  {
     _id,
     name,
