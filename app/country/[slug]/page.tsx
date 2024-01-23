@@ -5,11 +5,7 @@ import usePagination from "@/app/hooks/usePagination";
 import CheesePreviewGrid from "@/components/CheesePreviewGrid";
 import PaginationButtons from "@/components/PaginationButtons";
 
-async function getCountryData(
-  country: string,
-  startIndex: number,
-  endIndex: number
-) {
+async function getCountryData(country: string, startIndex: number, endIndex: number) {
   const totalItemsQuery = `count(*[_type == 'cheese' && country->name == "${country}"])`;
   const countryQuery = `*[_type == 'cheese' && country->name == "${country}"][${startIndex}..${endIndex}] {
     _id,
@@ -28,6 +24,8 @@ async function getCountryData(
   return countryData;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Country({
   params,
   searchParams,
@@ -37,13 +35,8 @@ export default async function Country({
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
   const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
-  const country =
-    params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
-  const { totalItems, countryCheese } = await getCountryData(
-    country,
-    startIndex,
-    endIndex
-  );
+  const country = params.slug.charAt(0).toUpperCase() + params.slug.toLowerCase().slice(1);
+  const { totalItems, countryCheese } = await getCountryData(country, startIndex, endIndex);
 
   return (
     <div>

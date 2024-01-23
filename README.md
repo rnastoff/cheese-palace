@@ -6,7 +6,7 @@
 - Sanity.io
 - SwiperJS
 - Stripe
-- [Live Site]()
+- [Live Site](https://cheese-palace.vercel.app/)
 
 ---
 

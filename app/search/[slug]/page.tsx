@@ -24,6 +24,8 @@ async function getSearchTermData(searchTerm: string, startIndex: number, endInde
   return searchTermData;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Search({
   params,
   searchParams,

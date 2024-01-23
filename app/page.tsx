@@ -32,6 +32,8 @@ async function getHomeData(startIndex: number, endIndex: number) {
   return allData;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Home({
   searchParams,
 }: {

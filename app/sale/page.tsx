@@ -39,6 +39,8 @@ async function getSaleCheeseData(startIndex: number, endIndex: number) {
   return saleCheeseData;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Sale({
   searchParams,
 }: {
@@ -46,16 +48,11 @@ export default async function Sale({
 }) {
   const currentPage = formatCurrentPage(searchParams.page);
   const { itemsPerPage, startIndex, endIndex } = usePagination(currentPage);
-  const { totalItems, saleCheese } = await getSaleCheeseData(
-    startIndex,
-    endIndex
-  );
+  const { totalItems, saleCheese } = await getSaleCheeseData(startIndex, endIndex);
 
   return (
     <div>
-      <h1 className="text-[#333333] text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">
-        Cheese on Sale!
-      </h1>
+      <h1 className="text-[#333333] text-center w-full sm:text-4xl text-3xl font-extrabold mt-4">Cheese on Sale!</h1>
       <CheesePreviewGrid cheese={saleCheese} />
       <PaginationButtons
         itemsPerPage={itemsPerPage}

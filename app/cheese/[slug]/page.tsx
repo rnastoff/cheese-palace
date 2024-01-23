@@ -60,6 +60,8 @@ async function getRecommendations(milk: string, country: string) {
   return recs;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Product({ params, searchParams }: Params) {
   const product = await getProduct(params.slug);
   const recs = await getRecommendations(product.milk_type, product.country);
