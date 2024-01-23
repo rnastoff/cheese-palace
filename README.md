@@ -3,6 +3,7 @@
 - React, NextJS
 - Typescript
 - Tailwind
+- Sanity.io
 - SwiperJS
 - Stripe
 - [Live Site]()
