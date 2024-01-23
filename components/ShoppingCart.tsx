@@ -91,7 +91,7 @@ export default function ShoppingCart() {
 
           {/* CONTINUE SHOPPING BUTTON */}
           <div className="text-center mt-4">
-            <button className="text-[#333333]" onClick={(e) => {}}>
+            <button className="text-[#333333]" onClick={handleCartClick}>
               Continue Shopping
             </button>
           </div>
