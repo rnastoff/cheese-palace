@@ -3,7 +3,7 @@
 - React, NextJS
 - Typescript
 - Tailwind
-- Sanity.io
+- Sanity.io CMS
 - SwiperJS
 - Stripe
 - [Live Site](https://cheese-palace.vercel.app/)
